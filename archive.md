@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: 
 title: "Archive"
 description: "文章归档"
 header-img: "img/orange.jpg"
