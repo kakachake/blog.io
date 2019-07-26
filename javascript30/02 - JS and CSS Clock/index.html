@@ -41,19 +41,19 @@
         if (secondsDegrees === 180) {
           secondHand.style.transition = 'all 0s';
         } else {
-          secondHand.style.transition = 'all 0.05s';
+          secondHand.style.transition = 'all 35s';
         }
 
         if (minsDegrees === 180) {
           minHand.style.transition = 'all 0s';
         } else {
-          minHand.style.transition = 'all 0.05s';
+          minHand.style.transition = 'all 1s';
         }
 
         if (secondsDegrees === 180) {
           secondHand.style.transition = 'all 0s';
         } else {
-          secondHand.style.transition = 'all 0.05s';
+          secondHand.style.transition = 'all 0.05s cubic-bezier(0.25, 0.1, 0.46, 2.24) 0s';
         }
 
         secondHand.style.transform = `rotate(${secondsDegrees}deg)`
