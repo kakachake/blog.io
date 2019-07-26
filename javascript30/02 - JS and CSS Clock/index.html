@@ -30,9 +30,9 @@
       function setDate(){
         const now = new Date()
 
-        const seconds = now.getSeconds();
-        const mins = now.getMinutes();
-        const hours = now.getHours();
+        let seconds = now.getSeconds();
+        let mins = now.getMinutes();
+        let hours = now.getHours();
 
         const secondsDegrees = 360*(seconds/60)+180;
         const minsDegrees = 360*(mins/60)+ ((seconds / 60) * 6) + 180;
@@ -59,6 +59,8 @@
         secondHand.style.transform = `rotate(${secondsDegrees}deg)`
         minHand.style.transform = `rotate(${minsDegrees}deg)`
         hourHand.style.transform = `rotate(${honrsDegrees}deg)`
+        hours = hours>=10?hours:'0'+hours
+        mins = mins>=10?mins:'0'+mins
         hhTimer.innerText = hours;
         mmTimer.innerText = mins;
       }
