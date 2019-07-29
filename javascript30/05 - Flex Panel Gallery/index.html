@@ -118,27 +118,27 @@
 
 
   <div class="panels">
-    <div class="panel panel1">
+    <div data-type = '1' class="panel panel1">
       <p>Hey</p>
       <p>Let's</p>
       <p>Dance</p>
     </div>
-    <div class="panel panel2">
+    <div data-type = '2' class="panel panel2">
       <p>Give</p>
       <p>Take</p>
       <p>Receive</p>
     </div>
-    <div class="panel panel3">
+    <div data-type = '3' class="panel panel3">
       <p>Experience</p>
       <p>It</p>
       <p>Today</p>
     </div>
-    <div class="panel panel4">
+    <div data-type = '4' class="panel panel4">
       <p>Give</p>
       <p>All</p>
       <p>You can</p>
     </div>
-    <div class="panel panel5">
+    <div data-type = '5' class="panel panel5">
       <p>Life</p>
       <p>In</p>
       <p>Motion</p>
@@ -149,16 +149,17 @@
     const panels = document.querySelectorAll('.panel');
 
     function toggleOpen(){
-      console.log(this);
       
       this.addEventListener('transitionend', toggleActiveOpen);
+      console.log('open', this);
+      
       this.classList.add('open')
       // this.classList.toggle('open-active');
     }
 
     function toggleClose(){
-      console.log(this);
-      
+      console.log('close', this);
+      this.removeEventListener('transitionend', toggleActiveOpen);
       this.addEventListener('transitionend', toggleActiveLeave);
       this.classList.remove('open')
       // this.classList.toggle('open-active');
@@ -168,8 +169,10 @@
       // console.log(e.propertyName);
       // console.log(e);
       
-      if (e.propertyName.includes('flex')) {
+      if (e.propertyName.includes('flex')) { //若flex动画执行完毕再执行字体进入动画
         this.classList.add('open-active');
+        console.log('activeOpen', this);
+        
         this.removeEventListener('transitionend', toggleActiveOpen);
       }
     }
@@ -178,7 +181,9 @@
       // console.log(e.propertyName);
       // console.log(e);
       
-      if (e.propertyName.includes('flex')) {
+      if (e.propertyName.includes('flex')) { //若flex动画执行完毕再执行字体进入动画
+        // console.log(this === e.target);
+        console.log('activeClose', this);
         this.classList.remove('open-active');
         this.removeEventListener('transitionend', toggleActiveLeave);
       }
