@@ -16,7 +16,7 @@
 
     #canvas {
       display: block;
-      /* background: linear-gradient(135deg, rgb(142, 13, 133) 0%, rgb(230, 132, 110) 100%); */
+      background: #000;
     }
   </style>
 </head>
@@ -86,45 +86,78 @@
         var meterWidth = 10
         console.log(voiceHeight);
         var capYPositionArray = []
-        var rLength = 60
-      function draw() {
+        var rLength = 150
+        var hue = 0
+        var offset = 0
+        function draw() {
             // 将当前的频率数据复制到传入的无符号字节数组中，做到实时连接
             analyser.getByteFrequencyData(voiceHeight);
             // console.log(voiceHeight);
             
             // 自定义获取数组里边数据的频步
-            var step = Math.round(voiceHeight.length / count/3);
+            var step = Math.round(voiceHeight.length / count/5);
             var color3 = ctx.createLinearGradient(oW / 2, oH / 2 - 30, oW / 2, oH / 2 - 150);
             color3.addColorStop(0,  "rgb(21, 228, 48)");
             color3.addColorStop(1,  "rgb(228, 58, 21)");
             
             ctx.lineWidth = 3;
-            ctx.strokeStyle = 'rgba(72, 226, 251, 0.8)';
-            ctx.fillStyle = "rgba(72, 226, 251, 0.8)";
-            ctx.beginPath();
+            
+            
+
+            
             ctx.clearRect(0, 0, oW, oH);
+            offset++;
             for (var i = 0; i < count; i++) {
+                ctx.beginPath();
+                var hue = (i+offset)%360
+                ctx.strokeStyle = `hsl(${ hue }, 90%, 50%)`;
+                ctx.fillStyle = `hsl(${ hue }, 90%, 50%)`;
                 var angle = 360/count * i;
-                
                 var audioHeight = voiceHeight[step * i];
+                var nextAngle = 360/count * (i+1)
+                var next = (i!=count-1)?voiceHeight[step*(i+1)]:voiceHeight[0]
+
                 var x = oW/2 + Math.cos(angle*(Math.PI / 180))*rLength
                 var y = oH/2 + Math.sin(angle*(Math.PI / 180))*rLength
-                var dx = oW/2 - Math.cos(angle*(Math.PI / 180))*rLength
-                var dy = oH/2 - Math.sin(angle*(Math.PI / 180))*rLength
                 var eX = oW/2 + Math.cos(angle*(Math.PI / 180))*(rLength+(audioHeight)/3)
                 var eY = oH/2 + Math.sin(angle*(Math.PI / 180))*(rLength+(audioHeight)/3)
-                var edX = oW/2 - Math.cos(angle*(Math.PI / 180))*(rLength+(audioHeight)/3)
-                var edY = oH/2 - Math.sin(angle*(Math.PI / 180))*(rLength+(audioHeight)/3)
-                ctx.moveTo(x,y);
-                ctx.lineTo(eX,eY)
+                var dotX = oW/2 + Math.cos(angle*(Math.PI / 180))*(rLength+(audioHeight)/(2.3)+10)
+                var dotY = oH/2 + Math.sin(angle*(Math.PI / 180))*(rLength+(audioHeight)/(2.3)+10)
+                var nX = oW/2 + Math.cos(nextAngle*(Math.PI / 180))*(rLength+(next)/3)
+                var nY = oH/2 + Math.sin(nextAngle*(Math.PI / 180))*(rLength+(next)/3)
+
+                ctx.lineWidth = 8;
+                drawDot(dotX, dotY)
+                drawOutline(x,y, eX, eY)
+                ctx.lineWidth = 1;
+                drawOutCur(eX, eY,nX , nY)
                 // ctx.moveTo(dx,dy);
                 // ctx.lineTo(edX,edY)
+                ctx.stroke();
+
+                // ctx.fillRect(20,20,150,100);
+                ctx.fill();
             }
-            ctx.stroke();
-            ctx.fill();
             // if(!oAudio.paused){
             window.requestAnimationFrame(draw);
             // }
+        }
+        function drawDot(dotX, dotY) {
+            // ctx.moveTo(dotX,dotY);
+            // ctx.lineTo(dotX+1,dotY+1);
+            ctx.fillRect(dotX-2,dotY-2,4,4);
+            
+        }
+
+        function drawOutline(x,y, eX, eY){
+
+            ctx.moveTo(x,y);
+            ctx.lineTo(eX,eY);
+        }
+
+        function drawOutCur(eX, eY,nX , nY){
+            ctx.moveTo(eX, eY);
+            ctx.lineTo(nX, nY);
         }
       })
 
