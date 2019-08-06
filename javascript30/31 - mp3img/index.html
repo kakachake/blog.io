@@ -34,9 +34,18 @@
         window.onclick = function () {
             if (oAudio.paused) {
             oAudio.play();
-            draw();
+            if(!draw.draw)
+            {
+                draw();
+                draw.draw = true
+            }else{
+                return;
+            }
             } else {
             oAudio.pause();
+            
+            
+            window.cancelAnimationFrame(draw);
             }
         }
         // console.log(oCtx);
@@ -119,7 +128,9 @@
                 ctx.fillRect(oW / 2 + (i * (meterWidth+3)), oH / 2, meterWidth, -audioHeight);
                 ctx.fillRect(oW / 2 - (i * (meterWidth+3)), oH / 2, meterWidth, -audioHeight);
             }
-            window.requestAnimationFrame(draw);
+            // if(!oAudio.paused){
+                window.requestAnimationFrame(draw);
+            // }
         }
       })
 
